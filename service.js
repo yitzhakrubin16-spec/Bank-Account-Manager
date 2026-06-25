@@ -5,7 +5,7 @@ import {createId, amountValidation, customers, idValidation,
 const incId = createId();
 
 
-function createCustomer(fullName, accountType, initialBalance) {
+export function createCustomer(fullName, accountType, initialBalance) {
     const validTypes = ["Regular", "Premium", "Student"];
     const balance = Number(initialBalance);
 
@@ -37,7 +37,7 @@ function createCustomer(fullName, accountType, initialBalance) {
 }
 
 
-function showCustomers() {
+export function showCustomers() {
     console.log("===== Customers =====");
 
     const customersText = customers.map(customer => {
@@ -55,7 +55,7 @@ Status : ${customer.isActive ? "Active" : "Not Active"}
 }
 
 
-function deposit(customerId, depositAmount) {
+export function deposit(customerId, depositAmount) {
     
     if (!idValidation(customerId)) {
             console.log("Illegal customer ID");
@@ -85,7 +85,7 @@ function deposit(customerId, depositAmount) {
     console.log("Deposit completed successfully");
 }
 
-function withdraw(customerId, withdrawAmount) {
+export function withdraw(customerId, withdrawAmount) {
     
     if (!idValidation(customerId)) {
             console.log("Illegal customer ID");
@@ -120,7 +120,7 @@ function withdraw(customerId, withdrawAmount) {
     console.log("Withdraw completed successfully");
 }
 
-function searchCustomer(customerId){
+export function searchCustomer(customerId){
     
     if (!idValidation(customerId)) {
             console.log("Illegal customer ID");
@@ -136,7 +136,7 @@ function searchCustomer(customerId){
     return customer;
 }
 
-function closeAccount(customerId){
+export function closeAccount(customerId){
     if (!idValidation(customerId)) {
             console.log("Illegal customer ID");
             return;
@@ -156,7 +156,7 @@ function closeAccount(customerId){
 }
 
 
-function showStatistics() {
+export function showStatistics() {
     const totalCustomers = customers.length;
 
     if (totalCustomers === 0) {
