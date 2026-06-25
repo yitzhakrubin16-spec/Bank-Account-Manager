@@ -5,7 +5,8 @@ import { createCustomer,
     withdraw,
     searchCustomer,
     closeAccount,
-    showStatistics} from "./service.js"
+    showStatistics,
+    transferMoney} from "./service.js"
 
 let choice;   
 console.log("===== Welcome to the bank accouunt maneger =====");
@@ -16,9 +17,10 @@ do{
 2. Show Customers
 3. Deposit
 4. Withdraw
-5. Search Customer
-6. Close Account
-7. Show Statistics
+5. Transfer Money
+6. Search Customer
+7. Close Account
+8. Show Statistics
 0. Exit
 `);
 
@@ -59,6 +61,15 @@ switch(choice){
     }
 
     case 5: {
+    const fromCustomerId = rl.question("Enter sender customer ID: ");
+    const toCustomerId = rl.question("Enter receiver customer ID: ");
+    const amount = rl.question("Enter amount to transfer: ");
+
+    transferMoney(fromCustomerId, toCustomerId, amount);
+    break;
+}
+
+    case 6: {
         const customerId = rl.question("Enter customer ID: ");
         const customer = searchCustomer(customerId);
 
@@ -69,14 +80,14 @@ switch(choice){
         break;
     }
 
-    case 6: {
+    case 7: {
         const customerId = rl.question("Enter customer ID: ");
 
         closeAccount(customerId);
         break;
     }
 
-    case 7: {
+    case 8: {
         showStatistics();
         break;
     }

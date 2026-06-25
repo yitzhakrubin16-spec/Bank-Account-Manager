@@ -195,3 +195,46 @@ export function showStatistics() {
     console.log(`Average Balance: ${averageBalance}`);
     console.log(`Highest Balance: ${highestBalance}`);
 }
+
+
+export function transferMoney(fromCustomerId, toCustomerId, transferAmount) {
+    
+    if (!idValidation(fromCustomerId) || !idValidation(toCustomerId)) {
+        console.log("Transfer failed: Illegal customer ID");
+        return;
+    }
+
+    if (Number(fromCustomerId) === Number(toCustomerId)) {
+        console.log("Transfer failed: Cannot transfer to the same account");
+        return;
+    }
+
+    const fromCustomer = returnCustomer(fromCustomerId);
+    const toCustomer = returnCustomer(toCustomerId);
+    const amount = Number(transferAmount);
+
+    if (!fromCustomer || !toCustomer) {
+        console.log("Transfer failed: Customer does not exist");
+        return;
+    }
+
+    if (!fromCustomer.isActive || !toCustomer.isActive) {
+        console.log("Transfer failed: One of the accounts is not active");
+        return;
+    }
+
+    if (!amountValidation(amount)) {
+        console.log("Transfer failed: Illegal amount to transfer");
+        return;
+    }
+
+    if (amount > fromCustomer.balance) {
+        console.log("Transfer failed: insufficient balance");
+        return;
+    }
+
+    fromCustomer.balance -= amount;
+    toCustomer.balance += amount;
+
+    console.log("Transfer completed successfully");
+}
