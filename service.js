@@ -1,6 +1,8 @@
-import {createId, amountValidation, customers, idValidation, 
-    returnCustomer
-} from "./utils.js"
+import {createId, 
+    amountValidation, 
+    customers, 
+    idValidation, 
+    returnCustomer} from "./utils.js"
 
 const incId = createId();
 
