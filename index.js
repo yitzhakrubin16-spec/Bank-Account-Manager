@@ -42,23 +42,31 @@ function createCustomer(fullName, accountType, initialBalance) {
     customers.push(newCustomer);
     console.log("Customer created successfully");
 }
-
-function showCustomers(){
+function showCustomers() {
     console.log("===== Customers =====");
-    
-    for (const customer of customers){
-        console.log(`Customer ID : ${customer.id}`);
-        console.log(`Customer Name : ${customer.fullName}`);
-        console.log(`Account Type : ${customer.accountType}`);
-        console.log(`Balance : ${customer.balance}`);
-        if(customer.isActive){console.log(`Status : Active`);}
-        else {console.log(`Status : Not Active`);}  
+
+    const customersText = customers.map(customer => {
+        return `Customer ID : ${customer.id}
+Customer Name : ${customer.fullName}
+Account Type : ${customer.accountType}
+Balance : ${customer.balance}
+Status : ${customer.isActive ? "Active" : "Not Active"}
+--------------------`;
+    });
+
+    for (const text of customersText) {
+        console.log(text);
     }
 }
 
 
 function deposit(customerId, amount) {
     const id = Number(customerId);
+    if (!Number.isFinite(id)) {
+            console.log("Illegal customer ID");
+            return;
+        }
+    
     const depositAmount = Number(amount);
 
     const customer = customers.find(customer => customer.id === id);
@@ -85,6 +93,12 @@ function deposit(customerId, amount) {
 
 function withdraw(customerId, amount) {
     const id = Number(customerId);
+    
+    if (!Number.isFinite(id)) {
+            console.log("Illegal customer ID");
+            return;
+        }
+    
     const withdrawAmount = Number(amount);
 
     const customer = customers.find(customer => customer.id === id);
@@ -112,4 +126,80 @@ function withdraw(customerId, amount) {
     customer.balance -= withdrawAmount;
 
     console.log("Withdraw completed successfully");
+}
+
+function searchCustomer(customerId){
+    const id = Number(customerId);
+   
+    if (!Number.isFinite(id)) {
+            console.log("Illegal customer ID");
+            return;
+        }
+    
+    const customer = customers.find(customer => customer.id === id);
+
+    
+
+    if (!customer) {
+        console.log("Customer search failed: Customer does not exist");
+        return;
+    }
+    return customer;
+}
+
+function closeAccount(customerId){
+    const id = Number(customerId);
+   
+    if (!Number.isFinite(id)) {
+            console.log("Illegal customer ID");
+            return;
+        }
+    
+    const customer = customers.find(customer => customer.id === id);
+
+    
+    if (!customer) {
+        console.log("Customer does not exist");
+        return;
+    }
+    customer.isActive = false;
+    console.log("Account closed successfully");
+    return;
+
+}
+function showStatistics() {
+    const totalCustomers = customers.length;
+
+    if (totalCustomers === 0) {
+        console.log("===== Statistics =====");
+        console.log("Total Customers: 0");
+        console.log("Active Accounts: 0");
+        console.log("Total Money: 0");
+        console.log("Average Balance: 0");
+        console.log("Highest Balance: 0");
+        return;
+    }
+
+    const activeAccounts = customers.filter(customer => customer.isActive).length;
+
+    const totalMoney = customers.reduce((acc, customer) => {
+        return acc + customer.balance;
+    }, 0);
+
+    const averageBalance = totalMoney / totalCustomers;
+
+    const highestBalance = customers.reduce((highest, customer) => {
+        if (customer.balance > highest) {
+            return customer.balance;
+        }
+
+        return highest;
+    }, customers[0].balance);
+
+    console.log("===== Statistics =====");
+    console.log(`Total Customers: ${totalCustomers}`);
+    console.log(`Active Accounts: ${activeAccounts}`);
+    console.log(`Total Money: ${totalMoney}`);
+    console.log(`Average Balance: ${averageBalance}`);
+    console.log(`Highest Balance: ${highestBalance}`);
 }
