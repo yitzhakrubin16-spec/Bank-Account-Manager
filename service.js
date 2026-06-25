@@ -34,6 +34,7 @@ export function createCustomer(fullName, accountType, initialBalance) {
 
     customers.push(newCustomer);
     console.log("Customer created successfully");
+    return newCustomer;
 }
 
 
