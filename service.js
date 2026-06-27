@@ -1,10 +1,13 @@
+import fs from "node:fs";
+
 import {createId, 
     amountValidation, 
     customers, 
     idValidation, 
-    returnCustomer} from "./utils.js"
+    returnCustomer,
+    setCustomers} from "./utils.js"
 
-const incId = createId();
+let incId = createId();
 
 
 export function createCustomer(fullName, accountType, initialBalance) {
@@ -35,6 +38,7 @@ export function createCustomer(fullName, accountType, initialBalance) {
     };
 
     customers.push(newCustomer);
+    saveToJson();
     console.log("Customer created successfully");
     return newCustomer;
 }
@@ -84,6 +88,7 @@ export function deposit(customerId, depositAmount) {
     }
 
     customer.balance += amount;
+    saveToJson();
 
     console.log("Deposit completed successfully");
 }
@@ -119,6 +124,7 @@ export function withdraw(customerId, withdrawAmount) {
     }
 
     customer.balance -= amount;
+    saveToJson();
 
     console.log("Withdraw completed successfully");
 }
@@ -153,6 +159,7 @@ export function closeAccount(customerId){
     }
 
     customer.isActive = false;
+    saveToJson();
     console.log("Account closed successfully");
     return;
 
@@ -235,6 +242,47 @@ export function transferMoney(fromCustomerId, toCustomerId, transferAmount) {
 
     fromCustomer.balance -= amount;
     toCustomer.balance += amount;
+    saveToJson();
 
     console.log("Transfer completed successfully");
+}
+
+export function saveToJson() {
+    const jsonData = JSON.stringify(customers, null, 4);
+    fs.writeFileSync("customers.json", jsonData);
+}
+
+export function loadFromJson() {
+    if (!fs.existsSync("customers.json")) {
+        console.log("No saved data found");
+        return;
+    }
+
+    const jsonData = fs.readFileSync("customers.json", "utf-8");
+
+    if (jsonData.trim() === "") {
+        console.log("No saved data found");
+        return;
+    }
+
+    const loadedCustomers = JSON.parse(jsonData);
+
+    if (!Array.isArray(loadedCustomers)) {
+        console.log("Load failed: invalid data");
+        return;
+    }
+
+    setCustomers(loadedCustomers);
+
+    const highestId = customers.reduce((highest, customer) => {
+        if (customer.id > highest) {
+            return customer.id;
+        }
+
+        return highest;
+    }, 0);
+
+    incId = createId(highestId + 1);
+
+    console.log("Data loaded successfully");
 }

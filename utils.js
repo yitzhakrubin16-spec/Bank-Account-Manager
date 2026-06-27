@@ -1,14 +1,14 @@
 export let customers = []
 
-export function createId(){
-    let Id = 1;
-    function incId(){
-        return Id++;
+export function createId(start = 1) {
+    let id = start;
 
+    function incId() {
+        return id++;
     }
+
     return incId;
 }
-
 
 export function amountValidation(amount){
     
@@ -36,3 +36,9 @@ export function returnCustomer(id){
     return customers.find(customer => customer.id == id);
 }
 
+
+
+export function setCustomers(newCustomers) {
+    customers.length = 0;
+    customers.push(...newCustomers);
+}

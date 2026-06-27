@@ -6,9 +6,11 @@ import { createCustomer,
     searchCustomer,
     closeAccount,
     showStatistics,
-    transferMoney} from "./service.js"
+    transferMoney,
+    loadFromJson} from "./service.js"
 
-let choice;   
+let choice;
+loadFromJson();   
 console.log("===== Welcome to the bank accouunt maneger =====");
 
 do{
